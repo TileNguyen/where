@@ -9,6 +9,8 @@ http                    = require('http'),
 session                 = require('express-session');
 
 
+var utils               = require('./app/utils');
+var routes              = require('./app/routes');
 
 var app = express(),
 httpServer    = http.Server(app);
@@ -33,8 +35,11 @@ app.all('*', (req, res, next) => {
 });
 
 // middleware
+app.use(utils.middleWare);
 
 // api
+app.use(routes);
+
 
 
 // unsupported api
@@ -45,6 +50,6 @@ app.use((req, res, next) => {
 
 
 //  server listen
-httpServer.listen(8000,() => {
-  console.log('Server listen port ' + 8000);
+httpServer.listen(10040,() => {
+  console.log('Server listen port ' + 10040);
 });
