@@ -1,5 +1,7 @@
 'use strict';
 
+const CODE = require('../utils')['CODE'];
+
 
 class UserController {
   constructor() {
@@ -11,7 +13,7 @@ class UserController {
   }
 
   get (req, res, next) {
-    return res.json({message: 'Get all users'});
+    return res.json(CODE.results(CODE.SUCCESS));
   }
 
   query (req, res, next) {

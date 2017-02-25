@@ -6,14 +6,15 @@ logger                  = require('morgan'),
 cookieParser            = require('cookie-parser'),
 bodyParser              = require('body-parser'),
 http                    = require('http'),
-session                 = require('express-session');
+session                 = require('express-session'),
+config                  = require('config');
 
 
 var utils               = require('./app/utils');
 var routes              = require('./app/routes');
 
 var app = express(),
-httpServer    = http.Server(app);
+httpServer = http.Server(app);
 
 
 // view engine setup
@@ -34,11 +35,16 @@ app.all('*', (req, res, next) => {
   return next();
 });
 
+// default url
+app.get('/', (req, res, next) => {
+  return res.end('Hello client!');
+});
+
 // middleware
 app.use(utils.middleWare);
 
 // api
-app.use(routes);
+app.use(routes['users']);
 
 
 
@@ -47,9 +53,11 @@ app.use((req, res, next) => {
   return res.json({});
 });
 // error response
-
+app.use((error, req, res, next) => {
+  return res.json({});
+});
 
 //  server listen
-httpServer.listen(10040,() => {
-  console.log('Server listen port ' + 10040);
+httpServer.listen(config.port,() => {
+  console.log(`Server listen port ${config.port}`);
 });
