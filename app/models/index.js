@@ -1,8 +1,7 @@
 'use strict';
 
-module.export = require('require-all')({
-  dirname: __dirname + '/models',
+module.exports = require('require-all')({
+  dirname: __dirname,
   filter: /(.+Model)\.js$/,
-  excludeDirs: /^\.(git|svn)$/,
   recursive: true
 });

@@ -7,15 +7,35 @@ cookieParser            = require('cookie-parser'),
 bodyParser              = require('body-parser'),
 http                    = require('http'),
 session                 = require('express-session'),
-config                  = require('config');
+config                  = require('config'),
+mongoose                = require('mongoose');
 
 
 var utils               = require('./app/utils');
 var routes              = require('./app/routes');
+const CODE              = utils['CODE'];
 
 var app = express(),
 httpServer = http.Server(app);
 
+var mongoCfg = [
+  "mongodb://",
+  config.mongo.user,
+  ":",
+  config.mongo.password,
+  "@",
+  config.mongo.host,
+  ":",
+  config.mongo.port,
+  "/",
+  config.mongo.database
+];
+
+// connect mongo
+mongoose.connect(mongoCfg.join(""));
+mongoose.connection.on('error', () => {
+  console.error('Connect error', arguments);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,11 +70,15 @@ app.use(routes['users']);
 
 // unsupported api
 app.use((req, res, next) => {
-  return res.json({});
+  return res.json(CODE.results(CODE.UNSUPPORTED));
 });
 // error response
 app.use((error, req, res, next) => {
-  return res.json({});
+  console.error(error);
+  if ('object' === typeof error) {
+    error = CODE.ERROR;
+  }
+  return res.json(CODE.results(error));
 });
 
 //  server listen

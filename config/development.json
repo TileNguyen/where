@@ -1,3 +1,10 @@
 {
-  "port": 10040
+  "port": 10040,
+  "mongo": {
+    "user": "admin",
+    "password": "123123",
+    "port": 27017,
+    "host": "127.0.0.1",
+    "database": "wheredb"
+  }
 }
